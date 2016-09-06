@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/products">
+<head>
+	<title></title>
+</head>
+<body>
+
+<th:block layout:fragment="products_content">
+	<style>
+		.image_container{
+			margin: 20px;
+			min-height: 230px;
+		}
+		.cbp-vm-view-grid .cbp-vm-details {
+			min-height: 0;
+		}
+		ul.women_pagenation li.disabled a:hover {
+			background: #eee;
+			color: #999;
+			cursor: not-allowed;
+		}
+	</style>
+
+	<!-- content-section-starts -->
+
+
+	<div class="new-product">
+		<div class="new-product-top">
+			<ul class="product-top-list">
+				<li><a href="/">Home</a>&nbsp;<span>&gt;</span></li>
+				<li><span class="act" th:text="${breadcrumb}">Best Sales</span>&nbsp;</li>
+				<li><span class="act" th:text="${breadcrumbName}">Best Sales</span>&nbsp;</li>
+			</ul>
+			<p class="back"><a href="/products">Browse all products</a></p>
+			<div class="clearfix"></div>
+		</div>
+		<div class="mens-toolbar">
+			<div class="cbp-vm-options">
+				<a href="#" class="cbp-vm-icon cbp-vm-grid cbp-vm-selected" data-view="cbp-vm-view-grid" title="grid">Grid View</a>
+				<a href="#" class="cbp-vm-icon cbp-vm-list" data-view="cbp-vm-view-list" title="list">List View</a>
+			</div>
+
+
+			<ul class="women_pagenation">
+				<li th:class="${products.number eq 0} ? 'disabled' : ''">
+					<a th:unless="${products.first}" th:href="@{${url}(page=${products.number - 1},size=${products.size})}">Previous</a>
+					<a th:if="${products.first}" href="javascript:void(0);">Previous</a>
+				</li>
+
+				<li th:each="productsNo : ${#numbers.sequence(0, products.totalPages - 1)}" th:class="${products.number eq productsNo}? 'active' : ''">
+					<a th:if="${products.number  eq productsNo}" href="javascript:void(0);">
+						<span th:text="${productsNo + 1}"></span>
+					</a>
+					<a th:unless="${products.number  eq productsNo}" th:href="@{${url}(page=${productsNo},size=${products.size})}">
+						<span th:text="${productsNo + 1}"></span>
+					</a>
+
+				</li>
+				<li th:class="${products.number + 1 ge products.totalPages} ? 'disabled' : ''">
+					<a th:if="${not products.last}" th:href="@{${url}(page=${products.number+1},size=${products.size})}">Next</a>
+					<a th:if="${products.last}" href="javascript:void(0);">Next</a>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid">
+			<div class="clearfix"></div>
+
+			<ul>
+				<li th:each="p : ${products}">
+					<div>
+						<a class="cbp-vm-image" th:href="@{/products/{id}(id=${p.id})}" href="single.html">
+							<div class="simpleCart_shelfItem">
+								<div class="view view-first">
+									<div class="inner_content clearfix">
+										<div class="product_image">
+											<div class="image_container">
+											<img src="/images/p1.jpg" th:src="${p.mainPhoto.url}" class="img-responsive" alt=""/>
+											<div class="mask">
+												<div class="info">View Details</div>
+											</div>
+											</div>
+											<div class="product_container">
+												<div class="cart-left">
+													<p class="title" th:text="${p.title}">perspiciatis</p>
+												</div>
+												<div class="pricey"><span class="item_price" th:text="${p.price}">$259.00</span></div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+
+						<div class="cbp-vm-details" th:text="${p.shortDescription}">
+							Silver beet shallot wakame tomatillo salsify mung bean beetroot groundnut.
+						</div>
+
+						<a th:if="${p.stockLevel gt 0}" class="cbp-vm-icon cbp-vm-add item_add add_to_cart_button" th:attr="data-product_id=${p.id}" href="#">Add to cart</a>
+						<span th:unless="${p.stockLevel gt 0}" class="cbp-vm-icon cbp-vm-add item_add" >Out of stock</span>
+					</div>
+				</li>
+
+			</ul>
+		</div>
+		<script src="/js/cbpViewModeSwitch.js" type="text/javascript"></script>
+		<script src="/js/classie.js" type="text/javascript"></script>
+	</div>
+
+
+	<!-- content-section-ends-here -->
+
+
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/default">
+<head>
+	<title></title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+
+
+	<!-- content-section-starts -->
+	<div class="container">
+		<div class="products-page">
+
+			<div class="products">
+				<div class="product-listy">
+					<h2>Browse By Brand</h2>
+					<ul class="product-list">
+						<li th:each="brand : ${brands}"><a th:href="@{/brands/{id}/products(id=${brand.id})}" th:text="${brand.title}">New Products</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<th:block layout:fragment="products_content"></th:block>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<!-- content-section-ends -->
+	<div class="other-products">
+		<div class="container">
+			<h3 class="like text-center" th:text="${featured.title}">Featured Collection</h3>
+			<ul id="flexiselDemo3">
+				<li th:each="p : ${featured.products}">
+					<a href="single.html" th:href="@{/products/{id}(id=${p.id})}">
+						<img src="/images/l1.jpg" th:src="${p.mainPhoto.url}" style="width: 220px;" class="img-responsive"/>
+					</a>
+					<div class="product liked-product simpleCart_shelfItem">
+						<a class="like_name" href="single.html" th:href="@{/products/{id}(id=${p.id})}" th:text="${p.title}">Perfectly simple</a>
+						<p><a class="item_add add_to_cart_button" href="#" th:attr="data-product_id=${p.id}"><i></i> <span class=" item_price" th:text="${p.price}">$759</span></a></p>
+					</div>
+				</li>
+
+			</ul>
+			<script type="text/javascript" src="/js/cart.js"></script>
+			<script type="text/javascript">
+				$(window).load(function() {
+					$("#flexiselDemo3").flexisel({
+						visibleItems: 4,
+						animationSpeed: 1000,
+						autoPlay: true,
+						autoPlaySpeed: 3000,
+						pauseOnHover: true,
+						enableResponsiveBreakpoints: true,
+						responsiveBreakpoints: {
+							portrait: {
+								changePoint:480,
+								visibleItems: 1
+							},
+							landscape: {
+								changePoint:640,
+								visibleItems: 2
+							},
+							tablet: {
+								changePoint:768,
+								visibleItems: 3
+							}
+						}
+					});
+
+				});
+			</script>
+			<script type="text/javascript" src="/js/jquery.flexisel.js"></script>
+		</div>
+	</div>
+	<!-- content-section-ends-here -->
+
+
+</th:block>
+
+</body>
+</html>

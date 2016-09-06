@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/simple">
+<head>
+    <title></title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <!-- checkout -->
+    <div class="cart-items">
+        <div class="container">
+            <div class="dreamcrub">
+                <ul class="breadcrumbs">
+                    <li class="home">
+                        <a href="/" title="Go to Home Page">Home</a>&nbsp;
+                        <span>&gt;</span>
+                    </li>
+                    <li class="women">
+                        Order Details
+                    </li>
+                </ul>
+                <ul class="previous">
+                    <li><a href="/orders">Back To Orders List Page</a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <h2>Order Details </h2>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td colspan="2">
+                        <h4 style="text-align: center;">Summery</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Order ID</th>
+                    <td th:text="${order.id}"></td>
+                </tr>
+                <tr>
+                    <th>Creation Date</th>
+                    <td th:text="${order.createdAt}"></td>
+                </tr>
+                <tr>
+                    <th>Total price</th>
+                    <td th:text="${order.total}"></td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td th:text="${order.status}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h4 style="text-align: center;">Item details</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i : ${order.items}">
+                                <td th:text="${i.product.title}"></td>
+                                <td th:text="${i.quantity}"></td>
+                                <td th:text="${i.unitPrice}"></td>
+                                <td th:text="${i.total}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- //checkout -->
+
+
+</th:block>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/simple">
+<head>
+	<title></title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+	<style>
+		.summery_table th{
+			width:75%;
+			text-align: right;
+		}
+		.item_actions{
+			text-align: right;
+		}
+		.quantity_input{
+			width: 50px;
+			text-align: center;
+		}
+	</style>
+	<!-- checkout -->
+	<div class="cart-items">
+		<div class="container">
+			<div class="dreamcrub">
+				<ul class="breadcrumbs">
+					<li class="home">
+						<a href="/" title="Go to Home Page">Home</a>&nbsp;
+						<span>&gt;</span>
+					</li>
+					<li>
+						Checkout
+					</li>
+				</ul>
+				<ul class="previous">
+					<li><a href="/cart">Back to shopping cart</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<th:block th:if="${#lists.isEmpty(checkout.items)}">
+				<h2>No Items In your cart! </h2>
+			</th:block>
+			<th:block th:unless="${#lists.isEmpty(checkout.items)}">
+			<h2>Order Details </h2>
+			<table class="table">
+				<tbody>
+				<tr>
+					<td>
+						<h4 style="text-align: center;">Item details</h4>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="table">
+							<thead>
+							<tr>
+								<th>Product</th>
+								<th>Quantity</th>
+								<th>Unit Price</th>
+								<th>Sub-Total</th>
+								<th>Taxes</th>
+								<th>Total</th>
+								<th>&nbsp;</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="i : ${checkout.items}">
+								<td th:text="${i.product.title}"></td>
+								<td>
+									<form th:action="@{'/cart/update/'+${i.id} }" method="post">
+										<input type="hidden" name="_method" value="put"/>
+										<input type="hidden" name="onsuccess" value="checkout"/>
+										<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+										<input class="quantity_input" type="text" name="quantity" th:value="${i.quantity}" />
+										<button>Update</button>
+									</form>
+								</td>
+								<td th:text="${i.unitPrice}"></td>
+								<td th:text="${i.subtotal}"></td>
+								<td th:text="${i.taxes}"></td>
+								<td th:text="${i.total}"></td>
+								<td class="item_actions">
+									<form th:action="@{'/cart/'+${i.id} }" method="post">
+										<input type="hidden" name="_method" value="delete"/>
+										<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+										<button>Delete</button>
+									</form>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h4 style="text-align: center;">Summery</h4>
+					</td>
+				</tr>
+				<tr>
+
+				<table class="table summery_table">
+					<tbody>
+					<tr>
+						<th>Sub-Total</th>
+						<td th:text="${checkout.subtotal}"></td>
+					</tr>
+					<tr>
+						<th>Taxes</th>
+						<td th:text="${checkout.taxes}"></td>
+					</tr>
+					<tr>
+						<th>Shipping cost</th>
+						<td>
+							<script>
+								$(function(){
+									$("#shipping_options_input").change(function () {
+										var t = $(this).find("option:selected").data('total');
+										var sm_id = $(this).find("option:selected").data('sm_id');
+										$("#order_total").text(t);
+										$("#payment-form input[name=shippingMethod]").val(sm_id);
+									});
+								});
+							</script>
+							<select name="shipping_options" id="shipping_options_input">
+								<option th:each="so : ${checkout.shippingOptions}" th:value="${so.shippingMethod.id}" th:attr="data-total=${so.orderTotal}, data-sm_id=${so.shippingMethod.id}" >
+									<span th:text="${so.shippingMethod.title}">Standsrd</span> ($<span th:text="${so.cost}">35</span>)
+								</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Total</th>
+						<td id="order_total" th:text="${checkout.shippingOptions[0].orderTotal}"></td>
+					</tr>
+					</tbody>
+				</table>
+				</tr>
+				</tbody>
+			</table>
+			<h2>PAYMENT &amp; SHIPPING INFO </h2>
+			<div class="registration-grids reg">
+				<form id="payment-form" th:action="@{/orders/checkout}" method="post" th:object="${order}">
+					<input type="hidden" name="token" value="tok_xxxxxxxx" />
+					<input type="hidden" name="shippingMethod" th:value="${checkout.shippingOptions[0].shippingMethod.id}" />
+					<div class="reg-form">
+						<div>
+							<h3>Personal Information</h3>
+
+							<ul>
+								<li class="text-info">First Name: </li>
+								<li><input type="text" th:field="*{customer.firstName}" /></li>
+							</ul>
+							<ul>
+								<li class="text-info">Last Name: </li>
+								<li><input type="text" value="" th:field="*{customer.lastName}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Email: </li>
+								<li><input type="text" value="" th:field="*{customer.email}"/></li>
+							</ul>
+							<h3>Billing Address</h3>
+							<ul>
+								<li class="text-info">Address Line 1: </li>
+								<li><input type="text" value="" th:field="*{billingAddress.streetLine1}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Address Line 2:</li>
+								<li><input type="text" value="" th:field="*{billingAddress.streetLine2}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">City:</li>
+								<li><input type="text" value="" th:field="*{billingAddress.city}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">State:</li>
+								<li><input type="text" value="" th:field="*{billingAddress.state}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Zip code:</li>
+								<li><input type="text" value="" th:field="*{billingAddress.zipCode}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Country:</li>
+								<li><input type="text" value="" th:field="*{billingAddress.country}"/></li>
+							</ul>
+							<h3>Shipping Address</h3>
+							<ul>
+								<li><input type="checkbox" value="" /></li>
+								<li class="text-info">Same as Billing address: </li>
+							</ul>
+							<div id="shipping_address_container">
+								<ul>
+									<li class="text-info">Address Line 1: </li>
+									<li><input type="text" value="" th:field="*{shippingAddress.streetLine1}"/></li>
+								</ul>
+								<ul>
+									<li class="text-info">Address Line 2:</li>
+									<li><input type="text" value="" th:field="*{shippingAddress.streetLine2}"/></li>
+								</ul>
+								<ul>
+									<li class="text-info">City:</li>
+									<li><input type="text" value="" th:field="*{shippingAddress.city}"/></li>
+								</ul>
+								<ul>
+									<li class="text-info">State:</li>
+									<li><input type="text" value="" th:field="*{shippingAddress.state}"/></li>
+								</ul>
+								<ul>
+									<li class="text-info">Zip code:</li>
+									<li><input type="text" value="" th:field="*{shippingAddress.zipCode}"/></li>
+								</ul>
+								<ul>
+									<li class="text-info">Country:</li>
+									<li><input type="text" value="" th:field="*{shippingAddress.country}"/></li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+					<div class="reg-right">
+						<h3>Credit Card Information</h3>
+						<ul>
+							<li class="text-info">Card Holder Name: </li>
+							<li><input id="card_holder_name" type="text" value="" /></li>
+						</ul>
+						<ul>
+							<li class="text-info">Card Number: </li>
+							<li><input id="card_number" type="text" value="4242424242424242" data-stripe="number"/></li>
+						</ul>
+						<ul>
+							<li class="text-info">CVC: </li>
+							<li><input id="cvc" type="text" value="123" data-stripe="cvc"/></li>
+						</ul>
+						<ul>
+							<li class="text-info">Expiration Date: </li>
+							<li>
+								Month: <input type="text" value="12" style="width: 100px;" data-stripe="exp-month"/>
+								Year: <input type="text" value="2017" style="width: 100px;" data-stripe="exp-year"/>
+							</li>
+						</ul>
+						<p style="display: none;" id="card_error_message"></p>
+						<input type="submit" value="PLACE ORDER" />
+						<p class="click">By clicking this button, you are agree to my  <a href="#">Policy Terms and Conditions.</a></p>
+					</div>
+					<div class="clearfix"></div>
+				</form>
+
+			</div>
+
+			</th:block>
+		</div>
+	</div>
+
+	<!-- //checkout -->
+
+
+</th:block>
+<th:block layout:fragment="page_js" th:if="${gateway eq 'stripe' }">
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+	<script th:inline="javascript">
+		Stripe.setPublishableKey([[${stripePublicKey}]]);
+		var purchase = {
+			tokenAvailable:false,
+			paymentForm:$("#payment-form"),
+			submitForm:function(token){
+				purchase.paymentForm.find('input[name=token]').val(token);
+				purchase.paymentForm[0].submit()
+			},
+			showInvalidCardMessage:function(error){
+				$('#card_error_message').show().text(error.message);
+			},
+			stripeResponseHandler:function(status, response){
+				console.log(response);
+				if(status == 200){
+					purchase.paymentForm.find('input[type=submit]').prop('disabled', false);
+					purchase.submitForm(response.id);
+				}else{
+					purchase.paymentForm.find('input[type=submit]').prop('disabled', false);
+					purchase.showInvalidCardMessage(response.error);
+				}
+			}
+		};
+		$(function(){
+			$(purchase.paymentForm).submit(function(event) {
+				if(!purchase.tokenAvailable) {
+					// Disable the submit button to prevent repeated clicks
+					purchase.paymentForm.find('input[type=submit]').prop('disabled', true);
+
+					Stripe.card.createToken(purchase.paymentForm, purchase.stripeResponseHandler);
+					// Prevent the form from submitting with the default action
+					return false;
+				}
+			});
+
+		});
+	</script>
+</th:block>
+</body>
+</html>

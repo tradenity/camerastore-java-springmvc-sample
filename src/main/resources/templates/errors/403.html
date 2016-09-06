@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/simple">
+<head>
+	<title></title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+	<div class="cart-items">
+		<div class="container">
+			<div class="dreamcrub">
+				<ul class="breadcrumbs">
+					<li class="home">
+						<a href="/" title="Go to Home Page">Home</a>
+					</li>
+				</ul>
+
+				<div class="clearfix"></div>
+			</div>
+			<h2>403: Forbidden </h2>
+			<h1 th:text="${message}">You are not authorized to view this resource!</h1>
+
+		</div>
+	</div>
+</th:block>
+</body>
+</html>

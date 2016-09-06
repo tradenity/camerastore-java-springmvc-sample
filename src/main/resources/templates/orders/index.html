@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/simple">
+<head>
+    <title></title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <!-- checkout -->
+    <div class="cart-items">
+        <div class="container">
+            <div class="dreamcrub">
+                <ul class="breadcrumbs">
+                    <li class="home">
+                        <a href="/" title="Go to Home Page">Home</a>&nbsp;
+                        <span>&gt;</span>
+                    </li>
+                    <li class="women">
+                        Orders
+                    </li>
+                </ul>
+                <ul class="previous">
+                    <li><a href="/products">Continue Shopping</a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <h2>MY ORDERS </h2>
+            <div th:if="${orders.isEmpty()}">
+                <h1>&nbsp;</h1>
+                <h1 style="text-align: center;">You did not yet placed any orders</h1>
+            </div>
+            <div th:unless="${orders.isEmpty()}" class="cart-gd">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Creation Date</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="o : ${orders}">
+                        <td>
+                            <a href="#" th:href="@{'/orders/'+${o.id} }" th:text="${o.id}"></a>
+                        </td>
+                        <td th:text="${o.createdAt}"></td>
+                        <td th:text="${o.total}"></td>
+                        <td th:text="${o.status}"></td>
+                        <td>
+                            <form th:action="@{'/orders/'+${o.id} }" method="post" th:unless="${o.status == 'refunded' }">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <input type="hidden" name="_method" value="DELETE" />
+                                <input type="submit" value="Refund"/>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- //checkout -->
+
+
+</th:block>
+</body>
+</html>

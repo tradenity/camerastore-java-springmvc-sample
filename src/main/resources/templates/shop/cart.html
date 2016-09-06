@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/default">
+<head>
+	<title></title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+	<style>
+		.cart-item-info span{
+			float: inherit;
+		}
+
+	</style>
+	<script>
+		$(function(){
+			var cart_total = $("#cart_total");
+			var cart_items_count = $("#cart_items_count");
+
+			$(".deleteItem").click(function(){
+				var itemId = $(this).data("itemId");
+				var url = "/cart/"+itemId;
+				$.ajax(url, {
+					method: 'POST',
+					data: {_method: "delete"},
+					success: function(result){
+						console.log(result);
+						cart_total.text(result.content.total);
+						cart_items_count.text(result.content.items.length);
+						$("#"+itemId).remove();
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+	<!-- checkout -->
+	<div class="cart-items">
+		<div class="container">
+			<div class="dreamcrub">
+				<ul class="breadcrumbs">
+					<li class="home">
+						<a href="/" title="Go to Home Page">Home</a>&nbsp;
+						<span>&gt;</span>
+					</li>
+					<li class="women">
+						Cart
+					</li>
+				</ul>
+				<ul class="previous">
+					<li><a href="/products">Continue shopping</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<h2><span>MY SHOPPING CART</span></h2>
+			<h1 th:if="${#lists.isEmpty(cart.items)}">No Items in your cart yet</h1>
+			<div th:unless="${#lists.isEmpty(cart.items)}" class="cart-gd">
+
+
+				<div class="cart-header" th:id="${item.id}" th:each="item : ${cart.items}">
+
+					<a href="#" class="close1 deleteItem" th:attr="data-item-id=${item.id}"> </a>
+					<div class="cart-sec simpleCart_shelfItem">
+						<div class="cart-item cyc">
+							<img th:src="${item.product.mainPhoto.url}" class="img-responsive" alt="" />
+						</div>
+						<div class="cart-item-info">
+							<h3><a href="#" th:text="${item.product.title}"> Lorem Ipsum is not simply </a></h3>
+
+							<div class="delivery">
+								<table>
+									<tbody>
+									<tr>
+										<th>Unit price: </th>
+										<td><span>$</span> <span th:text="${item.unitPrice}">10.00</span></td>
+									</tr>
+									<tr>
+										<th>Quantity</th>
+										<td>
+											<form th:action="@{'/cart/update/'+${item.id} }" method="post">
+												<input type="hidden" name="_method" value="put"/>
+												<input type="hidden" name="onsuccess" value="cart"/>
+												<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+												<input class="quantity_input" type="text" name="quantity" th:value="${item.quantity}" />
+												<button type="submit">Update</button>
+											</form>
+										</td>
+									</tr>
+									<tr>
+										<th>Taxes : </th>
+										<td><span>$</span> <span th:text="${item.taxes}">10.00</span></td>
+									</tr>
+									<tr>
+										<th>Total price : </th>
+										<td><span>$</span> <span th:text="${item.total}">10.00</span></td>
+									</tr>
+									</tbody>
+								</table>
+
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+
+					</div>
+				</div>
+				<div style="margin-top: 50px; text-align: right;">
+					<a href="/orders/checkout" class="big_button">Checkout</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- //checkout -->
+
+
+</th:block>
+</body>
+</html>

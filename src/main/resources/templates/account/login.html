@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/simple">
+<head>
+	<title>Login Page</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+	<!-- registration-form -->
+	<div class="registration-form">
+		<div class="container">
+			<div class="dreamcrub">
+				<ul class="breadcrumbs">
+					<li class="home">
+						<a href="/" title="Go to Home Page">Home</a>&nbsp;
+						<span>&gt;</span>
+					</li>
+					<li class="women">
+						Login
+					</li>
+				</ul>
+				<ul class="previous">
+					<li><a href="/products" th:href="@{/products}">Browse all products</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div th:if="${param.error}">
+				<div class="app-msg alert alert-danger alert-dismissable">
+					<h4><i class="icon fa fa-ban"></i> Incorrect credential, please check your username/password combination.</h4>
+				</div>
+			</div>
+
+			<h2>Login</h2>
+			<div class="registration-grids">
+				<div class="reg-form">
+					<div class="reg">
+						<p>Welcome, please enter your credentials to continue.</p>
+						<p>If you do not have previously registered with us, <a href="#" th:href="@{/register}">click here to create an account.</a></p>
+						<form th:action="@{/login}" method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+							<ul>
+								<li class="text-info">Username: </li>
+								<li><input type="text" name="username" value=""/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Password: </li>
+								<li><input type="password" name="password" value=""/></li>
+							</ul>
+
+							<input type="submit" value="LOGIN"/>
+
+						</form>
+					</div>
+				</div>
+				<div class="reg-right">
+
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</body>
+</html>

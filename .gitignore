@@ -1,0 +1,7 @@
+target
+target/**
+build
+build/**
+*.iml
+src/main/resources/application-local.properties
+src/main/resources/application-server.properties

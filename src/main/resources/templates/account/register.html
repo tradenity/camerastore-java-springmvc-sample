@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layouts/simple">
+<head>
+	<title>Login / Register</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+	<!-- registration-form -->
+	<div class="registration-form">
+		<div class="container">
+			<div class="dreamcrub">
+				<ul class="breadcrumbs">
+					<li class="home">
+						<a href="/" title="Go to Home Page">Home</a>&nbsp;
+						<span>&gt;</span>
+					</li>
+					<li class="women">
+						Registration
+					</li>
+				</ul>
+				<ul class="previous">
+					<li><a href="/">Browse all products</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+
+			<h2>Registration</h2>
+			<div class="registration-grids">
+				<div class="reg-form">
+					<div class="reg">
+						<p>Welcome, please enter the following details to continue.</p>
+						<p>If you have previously registered with us, <a href="#" th:href="@{/login}">click here to login</a></p>
+						<form th:action="@{/register}" method="post" th:object="${user}">
+							<div th:fragment="form_errors" th:if="${#fields.hasAnyErrors()}" class="app-msg alert alert-danger alert-dismissable">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4><i class="icon fa fa-ban"></i> Form errors, please correct!</h4>
+								<ul>
+									<li th:if="${ #fields.hasErrors('firstName')}">First Name: <span th:errors="*{firstName}" >Input with error</span>	</li>
+									<li th:if="${ #fields.hasErrors('lastName')}">Last Name: <span th:errors="*{lastName}" >Input with error</span>	</li>
+									<li th:if="${ #fields.hasErrors('email')}">Email: <span th:errors="*{email}" >Input with error</span>	</li>
+									<li th:if="${ #fields.hasErrors('username')}">Username: <span th:errors="*{username}" >Input with error</span>	</li>
+									<li th:if="${ #fields.hasErrors('password')}">Password: <span th:errors="*{password}" >Input with error</span>	</li>
+								</ul>
+							</div>
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+							<ul class="form-group has-error">
+								<li class="text-info">First Name: </li>
+								<li><input type="text" value="" th:field="*{firstName}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Last Name: </li>
+								<li><input type="text" value="" th:field="*{lastName}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Email: </li>
+								<li><input type="text" value="" th:field="*{email}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Username: </li>
+								<li><input type="text" value="" th:field="*{username}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Password: </li>
+								<li><input type="password" value="" th:field="*{password}"/></li>
+							</ul>
+							<ul>
+								<li class="text-info">Re-enter Password:</li>
+								<li><input type="password" value="" th:field="*{confirmPassword}"/></li>
+							</ul>
+
+							<input type="submit" value="REGISTER NOW"/>
+							<p class="click">By clicking this button, you are agree to my  <a href="#">Policy Terms and Conditions.</a></p>
+						</form>
+					</div>
+				</div>
+				<div class="reg-right">
+
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</body>
+</html>
