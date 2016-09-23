@@ -15,6 +15,7 @@ This is the application we are going to build here.
 
 -  Spring framework > 4.2 (other versions may work but not tested)
 -  [Tradenity Java SDK](https://github.com/tradenity/java-sdk)
+-  [Spring extensions for the Java SDK](https://github.com/tradenity/java-sdk-spring-ext)
 
 
 
