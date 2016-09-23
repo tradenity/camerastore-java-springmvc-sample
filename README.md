@@ -1,6 +1,13 @@
 
-Welcome to the Spring framework extensions for Tradenity Java SDK
+Welcome to the CameraStore sample application for Tradenity Java SDK
 =================================
+
+
+## Live demo
+
+Here you can find live demo of the [Camera store sample application](http://camera-store-sample.tradenity.com/).
+This is the application we are going to build here.
+
 
 ## Prerequisites
 
