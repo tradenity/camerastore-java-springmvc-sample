@@ -115,6 +115,9 @@
                         <version>1.2.3.RELEASE</version>
                     </dependency>-->
                 </dependencies>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>
