@@ -3,8 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tradenity</groupId>
     <artifactId>camerastore-java-springmvc-sample</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>0.1.0</version>
+    <!--<modules>
+        <module>../../media-providers</module>
+    </modules>-->
     <name>camerastore-java-springmvc-sample Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
@@ -19,7 +22,7 @@
         <dependency>
             <groupId>com.tradenity</groupId>
             <artifactId>java-sdk</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1</version>
         </dependency>
         <dependency>
             <groupId>com.tradenity</groupId>
@@ -30,10 +33,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
