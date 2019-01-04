@@ -1,0 +1,16 @@
+{
+  "name": "Tradenity: Camera sample store",
+  "description": "Sample store app to showcase Tradenity Java SDK.",
+  "addons": [  ],
+  "env": {
+    "TRADENITY_PUBLIC_KEY": {
+      "description": "Tradenity store public key."
+    },
+    "TRADENITY_SECRET_KEY": {
+      "description": "Tradenity store secret key."
+    },
+    "STRIPE_PUBLIC_KEY": {
+      "description": "Stripe gateway public key, if you are using it."
+    }
+  }
+}

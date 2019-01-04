@@ -1,0 +1,1 @@
+web: java -jar -Dspring.profiles.active=heroku target/camerastore-java-springmvc-sample.jar

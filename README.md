@@ -3,6 +3,9 @@ Welcome to the CameraStore sample application for Tradenity Java SDK
 =================================
 
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+
 ## Live demo
 
 Here you can find live demo of the [Camera store sample application](http://camera-store-sample.tradenity.com/).
@@ -35,6 +38,19 @@ Add your Store keys to `resources/application.properties` file:
 tradenity.publicKey=pk_xxxxxxxxxxxxxxxxxxxxxxx
 tradenity.secretKey=sk_xxxxxxxxxxxxxxxxxxxxxxx
 
+```
+
+
+## Running on Heroku
+
+In order to make it easy for you to test run this application, we made it Heroku ready, meaning you can run it as is in the Heroku PaaS.
+You just create a Heroku app and add config variables for your store keys
+
+```sh
+heroku create
+heroku config:set TRADENITY_PUBLIC_KEY=pk_xxxxxxxxxxxxxxxxxxxxxxxxxxx
+heroku config:set TRADENITY_SECRET_KEY=sk_xxxxxxxxxxxxxxxxxxxxxxxxxxx
+heroku config:set STRIPE_PUBLIC_KEY=pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 
