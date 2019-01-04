@@ -22,10 +22,10 @@
 		</div>
 		<div class="col-md-7 dress-info">
 			<div class="dress-name">
-				<h3 th:text="${product.title}">Product title</h3>
-				<span>$</span><span th:text="${product.price}">$459.00</span>
+				<h3 th:text="${product.name}">Product Name</h3>
+				<span>$</span><span th:text="${product.price / 100.0 }">$459.00</span>
 				<div class="clearfix"></div>
-				<p th:text="${product.description}">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
+				<p th:text="${product.fullDescription}">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
 
 			</div>
 

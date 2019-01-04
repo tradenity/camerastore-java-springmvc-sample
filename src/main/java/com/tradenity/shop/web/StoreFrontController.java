@@ -47,9 +47,6 @@ public class StoreFrontController {
     @Autowired
     OrderService orderService;
 
-
-
-
     @ModelAttribute
     public void commonAttributes(Model model){
         model.addAttribute("categories", categoryService.findAll());
@@ -67,12 +64,12 @@ public class StoreFrontController {
     public String allProducts(@RequestParam(value = "query", required = false) String query, Model model, @PageableDefault(9) Pageable pageable){
         Page<Product> products;
         if(query != null){
-            products = productService.search("title", query);
+            products = productService.search("name", query);
         }else {
             products = productService.findAll(pageRequest(pageable));
         }
         model.addAttribute("products", products);
-        model.addAttribute("featured", collectionService.findByName("featured"));
+        model.addAttribute("featured", collectionService.findBy("slug", "featured"));
         model.addAttribute("breadcrumb", "All");
         model.addAttribute("breadcrumbName", "products");
         return "shop/products";
@@ -82,10 +79,10 @@ public class StoreFrontController {
     public String productsByCategory(@PathVariable("cat_id") String id, Model model){
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
-        model.addAttribute("products", productService.findAllByCategory(category));
-        model.addAttribute("featured", collectionService.findByName("featured"));
+        model.addAttribute("products", productService.findAllBy("categories__contains", category));
+        model.addAttribute("featured", collectionService.findBy("slug", "featured"));
         model.addAttribute("breadcrumb", "Categories");
-        model.addAttribute("breadcrumbName", category.getTitle());
+        model.addAttribute("breadcrumbName", category.getName());
         return "shop/products";
     }
 
@@ -93,16 +90,16 @@ public class StoreFrontController {
     public String productsByBrand(@PathVariable("brand_id")String id, Model model){
         Brand brand = brandService.findById(id);
         model.addAttribute("breadcrumb", "Brands");
-        model.addAttribute("breadcrumbName", brand.getTitle());
+        model.addAttribute("breadcrumbName", brand.getName());
         model.addAttribute("brand", brand);
-        model.addAttribute("products", productService.findAllByBrand(brand));
-        model.addAttribute("featured", collectionService.findByName("featured"));
+        model.addAttribute("products", productService.findAllBy("brand", brand));
+        model.addAttribute("featured", collectionService.findBy("slug", "featured"));
         return "shop/products";
     }
 
     @RequestMapping("/products/{id}")
     public String product(@PathVariable("id")String id, Model model){
-        model.addAttribute("featured", collectionService.findByName("featured"));
+        model.addAttribute("featured", collectionService.findBy("slug", "featured"));
         model.addAttribute("product", productService.findById(id));
         return "shop/single";
     }

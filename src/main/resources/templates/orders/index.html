@@ -49,7 +49,7 @@
                             <a href="#" th:href="@{'/orders/'+${o.id} }" th:text="${o.id}"></a>
                         </td>
                         <td th:text="${o.createdAt}"></td>
-                        <td th:text="${o.total}"></td>
+                        <td th:text="${o.total / 100.0 }"></td>
                         <td th:text="${o.status}"></td>
                         <td>
                             <form th:action="@{'/orders/'+${o.id} }" method="post" th:unless="${o.status == 'refunded' }">

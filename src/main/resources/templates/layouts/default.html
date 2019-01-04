@@ -9,7 +9,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title>Eshop a Flat E-Commerce Bootstrap Responsive Website Template | Home :: w3layouts</title>
+	<title>Eshop a Flat E-Commerce Bootstrap Responsive Website Template | Home </title>
 	<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="/js/jquery.min.js"></script>
@@ -102,7 +102,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="header-right">
 				<div class="cart box_1">
 
-						<h3> $<span id="cart_total" class="simpleCart_total" th:text="${cart.total}"> 0.00 </span> (<span id="cart_items_count" class="simpleCart_quantity" th:text="${#lists.size(cart.items)}">  </span><span>Items</span>)<img src="/images/bag.png" alt="" /></h3>
+						<h3> $<span id="cart_total" class="simpleCart_total" th:text="${ cart.total / 100.0 }"> 0.00 </span> (<span id="cart_items_count" class="simpleCart_quantity" th:text="${#lists.size(cart.items)}">  </span><span>Items</span>)<img src="/images/bag.png" alt="" /></h3>
 
 					<p><a href="/cart" class="simpleCart_empty">Your cart</a></p>
 					<div class="clearfix"> </div>
@@ -132,7 +132,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav" id="category_menu">
 					<li><a href="/products" >All</a></li>
-					<li th:each="cat : ${categories}" th:unless="${#strings.equalsIgnoreCase(cat.name, 'uncategorized')}"><a th:href="@{/categories/{cat_id}/products(cat_id=${cat.getId()})}" href="#" th:text="${cat.title}">Home</a></li>
+					<li th:each="cat : ${categories}" th:unless="${#strings.equalsIgnoreCase(cat.slug, 'uncategorized')}"><a th:href="@{/categories/{cat_id}/products(cat_id=${cat.getId()})}" href="#" th:text="${cat.name}">Home</a></li>
 					<li><a href="#" id="show_search_box"><span class="glyphicon glyphicon-search"></span></a></li>
 				</ul>
 				<form action="/products" id="search_form" method="get" style="display: none;">

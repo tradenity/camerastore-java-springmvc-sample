@@ -3,13 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tradenity</groupId>
     <artifactId>camerastore-java-springmvc-sample</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1.0</version>
-    <!--<modules>
-        <module>../../media-providers</module>
-    </modules>-->
-    <name>camerastore-java-springmvc-sample Maven Webapp</name>
-    <url>http://maven.apache.org</url>
+    <packaging>jar</packaging>
+    <version>0.5.1</version>
+    <name>camerastore-java-springmvc-sample</name>
+    <url>https://github.com/tradenity/camerastore-java-springmvc-sample</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -22,12 +19,12 @@
         <dependency>
             <groupId>com.tradenity</groupId>
             <artifactId>java-sdk</artifactId>
-            <version>0.8.1</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.tradenity</groupId>
             <artifactId>java-sdk-spring-ext</artifactId>
-            <version>0.8.0</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -88,13 +85,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>tradenity-public</id>
-            <name>tradenity-release-public</name>
-            <url>http://artifacts.tradenity.com/artifactory/tradenity-release-public</url>
-        </repository>
-    </repositories>
+
 
     <build>
         <finalName>camerastore-java-springmvc-sample</finalName>
@@ -111,15 +102,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <dependencies>
-                    <!--<dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>springloaded</artifactId>
-                        <version>1.2.3.RELEASE</version>
-                    </dependency>-->
-                </dependencies>
                 <configuration>
                     <executable>true</executable>
+                    <mainClass>com.tradenity.shop.ShopApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

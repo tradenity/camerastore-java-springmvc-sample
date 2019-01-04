@@ -109,15 +109,15 @@
 			}
 		</style>
 		<div class="container collections" th:each="coll : ${collections}">
-			<h3 class="like text-center" th:text="${coll.title}">Featured Collection</h3>
-			<ul th:id="${coll.name}" class="flexiselDemo3">
+			<h3 class="like text-center" th:text="${coll.name}">Featured Collection</h3>
+			<ul th:id="${coll.slug}" class="flexiselDemo3">
 				<li th:each="p : ${coll.products}">
 					<a th:href="@{'/products/{id}'(id=${p.id})}" href="single.html">
 						<img src="/images/l1.jpg" th:src="${p.mainPhoto.url}" class="img-responsive" alt="" />
 					</a>
 					<div class="product liked-product simpleCart_shelfItem">
-						<a class="like_name" th:href="@{'/products/{id}'(id=${p.id})}" th:text="${p.title}" href="single.html">perfectly simple</a>
-						<p><a class="item_add add_to_cart_button" href="#" th:attr="data-product_id=${p.id}"><i></i> <span class=" item_price" th:text="${p.price}">$759</span></a></p>
+						<a class="like_name" th:href="@{'/products/{id}'(id=${p.id})}" th:text="${p.name}" href="single.html">perfectly simple</a>
+						<p><a class="item_add add_to_cart_button" href="#" th:attr="data-product_id=${p.id}"><i></i> <span class=" item_price" th:text="${ p.price / 100.0 }">$759</span></a></p>
 					</div>
 				</li>
 			</ul>

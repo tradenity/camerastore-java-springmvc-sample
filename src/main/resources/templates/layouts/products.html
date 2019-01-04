@@ -19,7 +19,7 @@
 				<div class="product-listy">
 					<h2>Browse By Brand</h2>
 					<ul class="product-list">
-						<li th:each="brand : ${brands}"><a th:href="@{/brands/{id}/products(id=${brand.id})}" th:text="${brand.title}">New Products</a></li>
+						<li th:each="brand : ${brands}"><a th:href="@{/brands/{id}/products(id=${brand.id})}" th:text="${brand.name}">New Products</a></li>
 					</ul>
 				</div>
 			</div>
@@ -32,15 +32,15 @@
 	<!-- content-section-ends -->
 	<div class="other-products">
 		<div class="container">
-			<h3 class="like text-center" th:text="${featured.title}">Featured Collection</h3>
+			<h3 class="like text-center" th:text="${featured.name}">Featured Collection</h3>
 			<ul id="flexiselDemo3">
 				<li th:each="p : ${featured.products}">
 					<a href="single.html" th:href="@{/products/{id}(id=${p.id})}">
 						<img src="/images/l1.jpg" th:src="${p.mainPhoto.url}" style="width: 220px;" class="img-responsive"/>
 					</a>
 					<div class="product liked-product simpleCart_shelfItem">
-						<a class="like_name" href="single.html" th:href="@{/products/{id}(id=${p.id})}" th:text="${p.title}">Perfectly simple</a>
-						<p><a class="item_add add_to_cart_button" href="#" th:attr="data-product_id=${p.id}"><i></i> <span class=" item_price" th:text="${p.price}">$759</span></a></p>
+						<a class="like_name" href="single.html" th:href="@{/products/{id}(id=${p.id})}" th:text="${p.name}">Perfectly simple</a>
+						<p><a class="item_add add_to_cart_button" href="#" th:attr="data-product_id=${p.id}"><i></i> <span class=" item_price" th:text="${p.price / 100.0}">$759</span></a></p>
 					</div>
 				</li>
 

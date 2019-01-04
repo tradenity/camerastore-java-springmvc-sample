@@ -52,7 +52,13 @@ public class AccountController {
             ra.addFlashAttribute("info", "Registration successful, please login!");
             return "redirect:/login";
         }catch (CustomerCreationException ex){
-            result.addError(new FieldError("user", ex.getErrorFieldName(), ex.getMessage()));
+            String fieldName;
+            if(ex.getErrorCode() == CustomerCreationException.EMAIL_ALREADY_REGISTERED){
+                fieldName = "email";
+            }else{
+                fieldName =  "username";
+            }
+            result.addError(new FieldError("user", fieldName, ex.getMessage()));
             return "account/register";
         }
     }

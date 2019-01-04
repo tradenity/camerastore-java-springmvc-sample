@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <th>Total price</th>
-                    <td th:text="${order.total}"></td>
+                    <td th:text="${order.total / 100.0 }"></td>
                 </tr>
                 <tr>
                     <th>Status</th>
@@ -69,10 +69,10 @@
                             </thead>
                             <tbody>
                             <tr th:each="i : ${order.items}">
-                                <td th:text="${i.product.title}"></td>
+                                <td th:text="${i.product.name}"></td>
                                 <td th:text="${i.quantity}"></td>
-                                <td th:text="${i.unitPrice}"></td>
-                                <td th:text="${i.total}"></td>
+                                <td th:text="${i.unitPrice / 100.0 }"></td>
+                                <td th:text="${i.total / 100.0 }"></td>
                             </tr>
                             </tbody>
                         </table>

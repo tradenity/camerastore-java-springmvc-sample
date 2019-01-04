@@ -139,7 +139,7 @@ public class User implements Serializable, UserDetails{
     }
 
     public Customer toCustomer() {
-        Customer c = new Customer(firstName, lastName, email, username, password, "active");
+        Customer c = new Customer().firstName(firstName).lastName(lastName).email(email).username(username).password(password).status(Customer.STATUS_ENABLED);
         c.setId(this.customerId);
         return c;
     }

@@ -15,8 +15,24 @@ $(function(){
             data: {product: product_id, quantity: 1},
             success: function(result){
                 console.log(result);
-                cart_total.text(result.content.total);
+                cart_total.text(result.content.total / 100.0);
                 cart_items_count.text(result.content.items.length);
+            }
+        });
+        return false;
+    });
+
+    $(".deleteItem").click(function(){
+        var itemId = $(this).data("itemId");
+        var url = "/cart/"+itemId;
+        $.ajax(url, {
+            method: 'POST',
+            data: {_method: "delete"},
+            success: function(result){
+                console.log(result);
+                cart_total.text(result.content.total /  100.0);
+                cart_items_count.text(result.content.items.length);
+                $("#"+itemId).remove();
             }
         });
         return false;

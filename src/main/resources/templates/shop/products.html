@@ -85,9 +85,9 @@
 											</div>
 											<div class="product_container">
 												<div class="cart-left">
-													<p class="title" th:text="${p.title}">perspiciatis</p>
+													<p class="title" th:text="${p.name}">perspiciatis</p>
 												</div>
-												<div class="pricey"><span class="item_price" th:text="${p.price}">$259.00</span></div>
+												<div class="pricey">$<span class="item_price" th:text="${p.price / 100.0 }">$259.00</span></div>
 												<div class="clearfix"></div>
 											</div>
 										</div>

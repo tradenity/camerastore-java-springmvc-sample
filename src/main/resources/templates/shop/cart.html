@@ -13,30 +13,8 @@
 		.cart-item-info span{
 			float: inherit;
 		}
-
 	</style>
-	<script>
-		$(function(){
-			var cart_total = $("#cart_total");
-			var cart_items_count = $("#cart_items_count");
-
-			$(".deleteItem").click(function(){
-				var itemId = $(this).data("itemId");
-				var url = "/cart/"+itemId;
-				$.ajax(url, {
-					method: 'POST',
-					data: {_method: "delete"},
-					success: function(result){
-						console.log(result);
-						cart_total.text(result.content.total);
-						cart_items_count.text(result.content.items.length);
-						$("#"+itemId).remove();
-					}
-				});
-				return false;
-			});
-		});
-	</script>
+	<script type="text/javascript" src="/js/cart.js"></script>
 	<!-- checkout -->
 	<div class="cart-items">
 		<div class="container">
@@ -68,14 +46,14 @@
 							<img th:src="${item.product.mainPhoto.url}" class="img-responsive" alt="" />
 						</div>
 						<div class="cart-item-info">
-							<h3><a href="#" th:text="${item.product.title}"> Lorem Ipsum is not simply </a></h3>
+							<h3><a href="#" th:text="${item.product.name}"> Lorem Ipsum is not simply </a></h3>
 
 							<div class="delivery">
 								<table>
 									<tbody>
 									<tr>
 										<th>Unit price: </th>
-										<td><span>$</span> <span th:text="${item.unitPrice}">10.00</span></td>
+										<td><span>$</span> <span th:text="${item.unitPrice / 100.0 }">10.00</span></td>
 									</tr>
 									<tr>
 										<th>Quantity</th>
@@ -91,11 +69,11 @@
 									</tr>
 									<tr>
 										<th>Taxes : </th>
-										<td><span>$</span> <span th:text="${item.taxes}">10.00</span></td>
+										<td><span>$</span> <span th:text="${item.taxAmount / 100.0}">10.00</span></td>
 									</tr>
 									<tr>
 										<th>Total price : </th>
-										<td><span>$</span> <span th:text="${item.total}">10.00</span></td>
+										<td><span>$</span> <span th:text="${item.subtotal / 100.0}">10.00</span></td>
 									</tr>
 									</tbody>
 								</table>

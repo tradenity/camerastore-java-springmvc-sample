@@ -61,7 +61,6 @@ public class CartController {
                              @RequestParam(value = "quantity", required = false)Integer quantity,
                              @RequestParam(value = "onsuccess", required = false)String onsuccess,
                              RedirectAttributes ra){
-
         String view = "redirect:/cart";
         if(onsuccess != null && onsuccess.equals("checkout")) {
             view = "redirect:/orders/checkout";
@@ -69,10 +68,10 @@ public class CartController {
 
         if (quantity != null) {
             if(quantity <= 0) {
-                shoppingCartService.delete(itemId);
+                shoppingCartService.deleteItem(itemId);
             }else{
                 try {
-                    shoppingCartService.update(itemId, quantity);
+                    shoppingCartService.updateItem(itemId, new LineItem().id(itemId).quantity(quantity));
                 }catch (InventoryErrorException e){
                     ra.addFlashAttribute("error", e.getMessage());
                     return view;
@@ -81,12 +80,11 @@ public class CartController {
         }
         ra.addFlashAttribute("info", "Shopping cart updated successfully");
         return view;
-
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/cart/{itemId}")
     public String removeItem(@PathVariable("itemId") String itemId){
-        shoppingCartService.delete(itemId);
+        shoppingCartService.deleteItem(itemId);
         return "redirect:/orders/checkout";
     }
 
@@ -96,7 +94,7 @@ public class CartController {
     @ResponseBody
     public Op removeItemAjax(@PathVariable("itemId") String itemId){
         try {
-            ShoppingCart sc = shoppingCartService.delete(itemId);
+            ShoppingCart sc = shoppingCartService.deleteItem(itemId);
             return new Op<>("success", "Item removed successfully!", sc);
         }catch (RuntimeException e) {
             return new Op("error", e.getMessage());
