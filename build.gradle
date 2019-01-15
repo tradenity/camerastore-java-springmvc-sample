@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.19.RELEASE")
     }
 }
 
@@ -30,8 +30,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("com.tradenity:java-sdk:1.0-SNAPSHOT")
-    compile("com.tradenity:java-sdk-springmvc:1.0-SNAPSHOT")
+    compile("com.tradenity:java-sdk:1.0.0")
+    compile("com.tradenity:java-sdk-spring-ext:1.0.0")
     compile("org.springframework.boot:spring-boot-starter-logging")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")

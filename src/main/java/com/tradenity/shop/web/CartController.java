@@ -3,6 +3,7 @@ package com.tradenity.shop.web;
 import com.tradenity.sdk.exceptions.InventoryErrorException;
 import com.tradenity.sdk.exceptions.RequestErrorException;
 import com.tradenity.sdk.model.LineItem;
+import com.tradenity.sdk.model.PageRequest;
 import com.tradenity.sdk.model.Product;
 import com.tradenity.sdk.model.ShoppingCart;
 import com.tradenity.sdk.services.CategoryService;
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.beans.PropertyEditorSupport;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.tradenity.sdk.model.Sort.sort;
 
 /**
  * Created by joseph
@@ -103,7 +106,7 @@ public class CartController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/cart")
     public String cart(Model model){
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryService.findAll(new PageRequest(0, 10, sort("position"))));
         model.addAttribute("cart", shoppingCartService.get());
         return "shop/cart";
     }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="shipping-form">
+    <form id="shipping-method-form" th:action="@{/orders/add_shipping}" method="post" th:object="${order}">
+        <input type="hidden" name="orderId" th:value="${order.id}" />
+        <ul>
+            <li class="text-info">Shipping Method:</li>
+            <li>
+                <select th:field="*{shippingMethod}">
+                    <option th:each="sm : ${shippingMethods}" th:value="${sm.id}" th:text="${sm.name}">Shipping Method Name</option>
+                </select>
+            </li>
+        </ul>
+        <input type="submit" value="SUBMIT" />
+    </form>
+</th:block>
+
+<th:block th:fragment="payment-form">
+    <form id="payment-form" th:action="@{/orders/add_payment}" method="post">
+
+        <input type="hidden" name="token" value="tok_xxxxxxxx" />
+        <ul>
+            <li class="text-info">Card Holder Name: </li>
+            <li><input id="card_holder_name" type="text" value="" /></li>
+        </ul>
+        <ul>
+            <li class="text-info">Card Number: </li>
+            <li><input id="card_number" type="text" value="4242424242424242" data-stripe="number"/></li>
+        </ul>
+        <ul>
+            <li class="text-info">CVC: </li>
+            <li><input id="cvc" type="text" value="123" data-stripe="cvc"/></li>
+        </ul>
+        <ul>
+            <li class="text-info">Expiration Date: </li>
+            <li>
+                Month: <input type="text" value="12" style="width: 100px;" data-stripe="exp-month"/>
+                Year: <input type="text" value="2019" style="width: 100px;" data-stripe="exp-year"/>
+            </li>
+        </ul>
+        <p style="display: none;" id="card_error_message"></p>
+        <input type="submit" value="PLACE ORDER" />
+        <p class="click">By clicking this button, you are agree to my  <a href="#">Policy Terms and Conditions.</a></p>
+    </form>
+</th:block>
+
+</body>
+</html>

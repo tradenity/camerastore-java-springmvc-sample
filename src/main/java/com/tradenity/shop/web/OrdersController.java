@@ -38,6 +38,8 @@ public class OrdersController {
     @Value("${payment.gateway.name:bogus}")
     String gateway;
 
+    Country usa;
+
     @Autowired
     CategoryService categoryService;
 
@@ -105,10 +107,11 @@ public class OrdersController {
     @RequestMapping(method = GET, path="/checkout")
     public String newInstance(@CurrentUser User user, Model model){
         Order order = new Order().customer(user.toCustomer());
-        Page<Country> countries = countryService.findAll(new PageRequest(0, 200));
-        Page<State> usStates = stateService.findAllBy("country", "2aed8039-0f77-bf56-85d6-d0bd4c8e26fe", new PageRequest(0, 100));
+        Page<Country> countries = countryService.findAll(new PageRequest(0, 250).sortBy("name", Sort.SortOrder.ASC));
+        Page<State> usStates = stateService.findAllBy("country", getUSA().getId(), new PageRequest(0, 100).sortBy("name"));
         order.setShippingAddress(createAddress());
         order.setBillingAddress(createAddress());
+        model.addAttribute("stripePublicKey", stripePublicKey);
         model.addAttribute("cart", shoppingCartService.get());
         model.addAttribute("order", order);
         model.addAttribute("states", usStates);
@@ -123,64 +126,32 @@ public class OrdersController {
     }
 
     @RequestMapping(method = POST, path="/checkout")
-    public String create(@CurrentUser User user, @Valid @ModelAttribute("order") Order order, BindingResult result, Model model, RedirectAttributes ra){
+    public String create(@Valid @ModelAttribute("order") Order order, BindingResult result, Model model, RedirectAttributes ra){
         if(result.hasErrors()){
-
-        }else{
-            Customer customer = user.toCustomer();
-            order.setCustomer(customer);
-            order = orderService.create(order);
-            List<ShippingMethod> shippingMethods = shippingMethodService.findAllForOrder(order.getId());
-            model.addAttribute("shippingMethods", shippingMethods);
+            return "redirect:/orders/checkout";
         }
-        Page<Country> countries = countryService.findAll(new PageRequest(0, 200));
-        Page<State> states = null;
-        if(order.getBillingAddress().getCountry() != null){
-            states = stateService.findAllBy("country", order.getBillingAddress().getCountry(), new PageRequest(0, 100));
-        }else {
-            states = stateService.findAllBy("country", "2aed8039-0f77-bf56-85d6-d0bd4c8e26fe", new PageRequest(0, 100));
-        }
-        model.addAttribute("states", states);
-        model.addAttribute("countries", countries);
-        model.addAttribute("cart", shoppingCartService.get());
+        order = orderService.create(order);
+        List<ShippingMethod> shippingMethods = shippingMethodService.findAllForOrder(order.getId());
+        //Page<ShippingMethod> shippingMethods = shippingMethodService.findAll();
+        model.addAttribute("shippingMethods", shippingMethods);
         model.addAttribute("order", order);
-        return "orders/new";
+        return "orders/checkout-forms :: shipping-form";
     }
 
     @RequestMapping(method = POST, path="/add_shipping")
     public String addShippingInfo(@ModelAttribute("order") Order order, Model model){
-        if(isValid(order)) {
-           order =  orderService.update(order);
-            model.addAttribute("gateway", gateway);
-            model.addAttribute("stripePublicKey", stripePublicKey);
-        }
-        Page<Country> countries = countryService.findAll(new PageRequest(0, 200));
-        Page<State> states = null;
-        if(order.getBillingAddress().getCountry() != null){
-            states = stateService.findAllBy("country", order.getBillingAddress().getCountry(), new PageRequest(0, 100));
-        }else {
-            states = stateService.findAllBy("country", "2aed8039-0f77-bf56-85d6-d0bd4c8e26fe", new PageRequest(0, 100));
-        }
-        List<ShippingMethod> shippingMethods = shippingMethodService.findAllForOrder(order.getId());
-
-        model.addAttribute("shippingMethods", shippingMethods);
-        model.addAttribute("states", states);
-        model.addAttribute("countries", countries);
-        model.addAttribute("cart", shoppingCartService.get());
+        order = orderService.update(order);
         model.addAttribute("order", order);
-        return "orders/new";
+        return "orders/checkout-forms :: payment-form";
     }
 
     @RequestMapping(method = POST, path="/add_payment")
-    public String addPaymentInfo(@CurrentUser User user, @ModelAttribute("order") Order order, @RequestParam("token") String stripeToken, HttpSession session, SessionStatus sessionStatus, Model model, RedirectAttributes ra){
-        if(!isValid(order)) {
-            if (stripeToken != null && !stripeToken.trim().isEmpty()) {
-                session.setAttribute("stripToken", stripeToken);
-                model.addAttribute("stripTokenAvailable", true);
-            }
-            return "orders/new";
+    public String addPaymentInfo(@ModelAttribute("order") Order order, @RequestParam("token") String stripeToken, HttpSession session, SessionStatus sessionStatus, Model model, RedirectAttributes ra){
+        if (stripeToken != null && !stripeToken.trim().isEmpty()) {
+            session.setAttribute("stripToken", stripeToken);
+            model.addAttribute("stripTokenAvailable", true);
         }
-        PaymentSource ps = paymentTokenService.create(new PaymentToken().token(stripeToken).customer(user.toCustomer()).status(STATUS_NEW));
+        PaymentSource ps = paymentTokenService.create(new PaymentToken().token(stripeToken).customer(order.getCustomer()).status(STATUS_NEW));
         Payment p = creditCardPaymentService.create(new CreditCardPayment().order(order).paymentSource(ps));
 
         sessionStatus.setComplete();
@@ -219,6 +190,13 @@ public class OrdersController {
     }
 
     private Address createAddress() {
-        return new Address().streetLine1("3290 Hermosillo Place").streetLine2("").city("Washington").state(new State().id("")).zipCode("20521-3290").country(new Country().id("2aed8039-0f77-bf56-85d6-d0bd4c8e26fe"));
+        return new Address().streetLine1("3290 Hermosillo Place").streetLine2("").city("Washington").state(new State().id("")).zipCode("20521-3290").country(getUSA());
+    }
+
+    private Country getUSA() {
+        if(usa == null) {
+            usa = countryService.findBy("iso2", "US");
+        }
+        return usa;
     }
 }

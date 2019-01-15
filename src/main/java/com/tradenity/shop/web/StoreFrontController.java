@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import static com.tradenity.sdk.model.Sort.sort;
 import static com.tradenity.sdk.spring.web.Utils.pageRequest;
 
 /**
@@ -49,7 +50,7 @@ public class StoreFrontController {
 
     @ModelAttribute
     public void commonAttributes(Model model){
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryService.findAll(new PageRequest(0, 10, sort("position"))));
         model.addAttribute("brands", brandService.findAll());
         model.addAttribute("cart", shoppingCartService.get());
     }
