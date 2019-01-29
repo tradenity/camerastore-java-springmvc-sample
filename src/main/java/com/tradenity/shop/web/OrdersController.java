@@ -131,7 +131,7 @@ public class OrdersController {
             return "redirect:/orders/checkout";
         }
         order = orderService.create(order);
-        List<ShippingMethod> shippingMethods = shippingMethodService.findAllForOrder(order.getId());
+        Page<ShippingMethod> shippingMethods = shippingMethodService.findAllForOrder(order.getId(), new PageRequest());
         //Page<ShippingMethod> shippingMethods = shippingMethodService.findAll();
         model.addAttribute("shippingMethods", shippingMethods);
         model.addAttribute("order", order);

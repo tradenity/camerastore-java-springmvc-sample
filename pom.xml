@@ -4,7 +4,7 @@
     <groupId>com.tradenity</groupId>
     <artifactId>camerastore-java-springmvc-sample</artifactId>
     <packaging>jar</packaging>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
     <name>camerastore-java-springmvc-sample</name>
     <url>https://github.com/tradenity/camerastore-java-springmvc-sample</url>
 
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.tradenity</groupId>
             <artifactId>java-sdk</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.tradenity</groupId>
